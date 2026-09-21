@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200..700;1,9..40,200..700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/styles.css">
+    <title>Car-Go</title>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a href="#" class="brand" aria-label="Home">
+                <span class="brand__logo" aria-hidden="true">
+                    <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+                        <rect x="2" y="2" width="28" height="28" rx="14" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="16" cy="16" r="4" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span class="brand__name">Car-Go</span>
+            </a>
+
+            <nav class="primary-nav" aria-label="Primary">
+                <a href="#about">Rent a Car</a>
+                <a href="#now">Offices</a>
+                <a href="/portfolio">Contact</a>
+            </nav>
+
+            <div class="account-actions">
+                <a href="/login" class="header-cta">Log in</a>
+                <a href="/signup" class="header-cta">Sign Up</a>
+            </div>
+        </div>
+    </header> 
+
+    <!-- ════════════════════════════════ Company Info / Advertising Stats ════════════════════════════════ -->
+    <section class="section section--now" id="now">
+        <div class="section__inner">
+            <div class="section-head">
+                <div>
+                    <span class="section-label">Info</span>
+                    <h2 class="section-title">About Car-Go</h2>
+                </div>
+            </div>
+
+            <div class="now-grid">
+                <article class="now-card now-card--primary">
+                    <div class="now-card__top">
+                        <span class="now-card__tag">Lorem Ipsum</span>
+                        <span class="now-card__stage">Active</span>
+                    </div>
+                    <h3 class="now-card__title">Lorem Ipsum Example Title</h3>
+                    <p class="now-card__body">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni ab, veritatis maiores ut tempora earum modi deserunt repellat quis nesciunt, consectetur voluptatum officia similique aperiam eveniet, dolore quas nostrum ducimus.
+                    </p>
+                    <div class="now-card__meta">
+                        <span>Tag 1</span>
+                        <span>Tag 2</span>
+                        <span>Tag 3</span>
+                        <span>Tag 4</span>
+                    </div>
+                </article>
+
+                <article class="now-card">
+                    <div class="now-card__top">
+                        <span class="now-card__tag">Lorem Ipsum</span>
+                        <span class="now-card__stage">Active</span>
+                    </div>
+                    <h3 class="now-card__title">Lorem Ipsum Example Title</h3>
+                    <p class="now-card__body">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur corporis quibusdam temporibus fuga voluptatum minus dolorem totam asperiores optio aspernatur, nihil architecto est odio, voluptates labore dolor dolores nemo similique.
+                    </p>
+                    <div class="now-card__meta">
+                        <span>Tag 1</span>
+                        <span>Tag 2</span>
+                        <span>Tag 3</span>
+                    </div>
+                </article>
+
+                <article class="now-card">
+                    <div class="now-card__top">
+                        <span class="now-card__tag">Lorem Ipsum</span>
+                        <span class="now-card__stage">Active</span>
+                    </div>
+                    <h3 class="now-card__title">Lorem Ipsum Example Title</h3>
+                    <p class="now-card__body">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odio placeat ipsam sapiente praesentium ipsum, molestiae dolore. Autem totam soluta corrupti hic dolores unde! Amet eos quis, suscipit perferendis odio quisquam?
+                    </p>
+                    <div class="now-card__meta">
+                        <span>Tag 1</span>
+                        <span>Tag 2</span>
+                        <span>Tag 3</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════ HIGHLIGHTS ════════════════════════════════ -->
+    <section class="numbers">
+        <div class="numbers__inner">
+            <article class="number-card">
+                <span class="number-card__value">stat</span>
+                <span class="number-card__label">Lorem Ipsum Statement</span>
+            </article>
+            <article class="number-card">
+                <span class="number-card__value">90%</span>
+                <span class="number-card__label">Lorem Ipsum Statement about statistic</span>
+            </article>
+            <article class="number-card">
+                <span class="number-card__value">05</span>
+                <span class="number-card__label">Consultants led on an IT asset audit</span>
+            </article>
+            <article class="number-card">
+                <span class="number-card__value">UK</span>
+                <span class="number-card__label">Windows 11 rollout supported end-to-end</span>
+            </article>
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════ Certifications ════════════════════════════════ -->
+
+    <section class="section section--certs" id="certifications">
+        <div class="section__inner">
+            <div class="section-head">
+                <div>
+                    <span class="section-label">09 / Credentials</span>
+                    <h2 class="section-title">Certifications & qualifications</h2>
+                </div>
+                <a href="/certifications.html" class="section-link">
+                    View all Certifications
+                    <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
+                        <path d="M3 8h10m0 0L9 4m4 4l-4 4" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="certs-grid">
+
+                <article class="cert-card cert-card--microsoft">
+                    <div class="cert-card__ribbon">
+                    <span class="cert-card__provider-logo">
+                        <img src="Honda.png" alt="Microsoft" class="cert-card__logo">
+                    </span>
+                    <span class="cert-card__year">2006</span>
+                    </div>
+                    <h3 class="cert-card__abbr">Honda Civic - Mauv</h3>
+                    <p class="cert-card__name">Day Rate: £40</p>
+                    <p class="cert-card__tribute">
+                        <img src="Honda_Civic_Mauv.jpg">
+                        <br>
+                    ISC2's intermediate hands-on security credential, covering access controls, cryptography, network &amp; communications security, incident response, systems &amp; application security, and risk identification.
+                    </p>
+                    <a href="https://learn.microsoft.com/api/credentials/share/en-gb/GurveerArora-7241/6A9F4E160DB66E61?sharingId=81F9471B19C460E" class="cert-card__status cert-card__status--done" target="_blank" rel="noopener" aria-label="Verify Azure Administrator Associate certification">
+                    <span class="cert-card__status-dot"></span>
+                    <span>Verify</span>
+                    <svg class="cert-card__status-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true">
+                        <path d="M4 12L12 4m0 0H6m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </a>
+                </article>
+                
+                <article class="cert-card cert-card--isc2">
+                    <div class="cert-card__ribbon">
+                    <span class="cert-card__provider-logo">
+                        <img src="logos/isc2.svg" alt="ISC2" class="cert-card__logo">
+                    </span>
+                    <span class="cert-card__year">2026</span>
+                    </div>
+                    <h3 class="cert-card__abbr">SSCP</h3>
+                    <p class="cert-card__name">Systems Security Certified Practitioner</p>
+                    <p class="cert-card__tribute">
+                    ISC2's intermediate hands-on security credential, covering access controls, cryptography, network &amp; communications security, incident response, systems &amp; application security, and risk identification.
+                    </p>
+                    <a href="https://www.credly.com/badges/f62d4514-7573-4653-98a8-93bd75c0fbf7/public_url" class="cert-card__status cert-card__status--done" target="_blank" rel="noopener" aria-label="Verify Systems Security Certified Practitioner certification">
+                    <span class="cert-card__status-dot"></span>
+                    <span>Verify</span>
+                    <svg class="cert-card__status-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true">
+                        <path d="M4 12L12 4m0 0H6m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </a>
+                </article>
+                
+                <article class="cert-card cert-card--servicenow">
+                    <div class="cert-card__ribbon">
+                    <span class="cert-card__provider-logo">
+                        <img src="logos/servicenow.svg" alt="ServiceNow" class="cert-card__logo">
+                    </span>
+                    <span class="cert-card__year">2026</span>
+                    </div>
+                    <h3 class="cert-card__abbr">CSA</h3>
+                    <p class="cert-card__name">Certified System Administrator</p>
+                    <p class="cert-card__tribute">
+                    The foundational administrator credential for the ServiceNow platform - covering workflows, data schema, UI configuration, and ITIL-aligned service management. Proves operational fluency on the world's largest ITSM platform.
+                    </p>
+                    <a href="https://www.credly.com/badges/baa5e6b9-4c50-4d61-b021-d0269a0551ba" class="cert-card__status cert-card__status--done" target="_blank" rel="noopener" aria-label="Verify Certified System Administrator certification">
+                    <span class="cert-card__status-dot"></span>
+                    <span>Verify</span>
+                    <svg class="cert-card__status-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true">
+                        <path d="M4 12L12 4m0 0H6m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </a>
+                </article>
+                
+                <article class="cert-card cert-card--isc2">
+                    <div class="cert-card__ribbon">
+                    <span class="cert-card__provider-logo">
+                        <img src="logos/isc2.svg" alt="ISC2" class="cert-card__logo">
+                    </span>
+                    <span class="cert-card__year">2026</span>
+                    </div>
+                    <h3 class="cert-card__abbr">CC</h3>
+                    <p class="cert-card__name">Certified in Cybersecurity</p>
+                    <p class="cert-card__tribute">
+                    ISC2's entry-level certification into the global cybersecurity workforce. Covers security principles, incident response &amp; BCDR, access controls, network security, and security operations.
+                    </p>
+                    <a href="https://www.credly.com/badges/c89d09d3-ffc2-4d49-9c58-46d8fe47ee9e" class="cert-card__status cert-card__status--done" target="_blank" rel="noopener" aria-label="Verify Certified in Cybersecurity certification">
+                    <span class="cert-card__status-dot"></span>
+                    <span>Verify</span>
+                    <svg class="cert-card__status-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true">
+                        <path d="M4 12L12 4m0 0H6m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </a>
+                </article>
+                
+                <article class="cert-card cert-card--harvard">
+                    <div class="cert-card__ribbon">
+                    <span class="cert-card__provider-logo">
+                        <img src="logos/harvard.svg" alt="Harvard" class="cert-card__logo">
+                    </span>
+                    <span class="cert-card__year">2023</span>
+                    </div>
+                    <h3 class="cert-card__abbr">CS50x</h3>
+                    <p class="cert-card__name">Introduction to Computer Science</p>
+                    <p class="cert-card__tribute">
+                    Harvard's flagship computer science course - a rigorous grounding in C, Python, SQL, algorithms, memory, and the mental models that underpin all software. The course that has started more careers than any other in recent memory.
+                    </p>
+                    <a href="https://cs50.harvard.edu/certificates/b5db7ff6-cf4c-469e-990c-5fabc1c68a2a" class="cert-card__status cert-card__status--done" target="_blank" rel="noopener" aria-label="Verify Introduction to Computer Science certification">
+                    <span class="cert-card__status-dot"></span>
+                    <span>Verify</span>
+                    <svg class="cert-card__status-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true">
+                        <path d="M4 12L12 4m0 0H6m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </a>
+                </article>
+                
+                <article class="cert-card cert-card--harvard">
+                    <div class="cert-card__ribbon">
+                    <span class="cert-card__provider-logo">
+                        <img src="logos/harvard.svg" alt="Harvard" class="cert-card__logo">
+                    </span>
+                    <span class="cert-card__year">2025</span>
+                    </div>
+                    <h3 class="cert-card__abbr">CS50 AI</h3>
+                    <p class="cert-card__name">Introduction to Artificial Intelligence with Python</p>
+                    <p class="cert-card__tribute">
+                    Harvard's follow-on programme covering the ideas behind modern AI - search, knowledge representation, optimisation, neural networks, and natural language. Practical Python implementations paired with the underlying theory.
+                    </p>
+                    <a href="https://cs50.harvard.edu/certificates/63bb5a9f-5d48-4835-a409-b268a8202aeb" class="cert-card__status cert-card__status--done" target="_blank" rel="noopener" aria-label="Verify Introduction to Artificial Intelligence with Python certification">
+                    <span class="cert-card__status-dot"></span>
+                    <span>Verify</span>
+                    <svg class="cert-card__status-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true">
+                        <path d="M4 12L12 4m0 0H6m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </a>
+                </article>
+                
+                <article class="cert-card cert-card--bloomberg">
+                    <div class="cert-card__ribbon">
+                    <span class="cert-card__provider-logo">
+                        <img src="logos/bloomberg.svg" alt="Bloomberg" class="cert-card__logo">
+                    </span>
+                    <span class="cert-card__year">2024</span>
+                    </div>
+                    <h3 class="cert-card__abbr">BMC</h3>
+                    <p class="cert-card__name">Bloomberg Market Concepts</p>
+                    <p class="cert-card__tribute">
+                    Bloomberg's foundational finance credential, delivered through the same terminal that powers global markets. Covers economic indicators, currencies, fixed income, and equities - the commercial literacy that anchors technical work in business outcomes.
+                    </p>
+                    <a href="https://portal.bloombergforeducation.com/certificates/EK4npPv2FGj2axaiRAJdz9w9" class="cert-card__status cert-card__status--done" target="_blank" rel="noopener" aria-label="Verify Bloomberg Market Concepts certification">
+                    <span class="cert-card__status-dot"></span>
+                    <span>Verify</span>
+                    <svg class="cert-card__status-arrow" viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true">
+                        <path d="M4 12L12 4m0 0H6m6 0v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    </a>
+                </article>
+                            
+            </div>
+        </div>
+    </section>
+    
+    <!--  CONTACT  -->
+    <section class="contact" id="contact">
+        <div class="contact__inner">
+            <div class="contact__shape" aria-hidden="true">
+                <svg viewBox="0 0 160 160" width="100%" height="100%" fill="none">
+                    <circle cx="80" cy="80" r="78" stroke="currentColor" stroke-width="0.5" opacity="0.35"/>
+                    <circle cx="80" cy="80" r="58" stroke="currentColor" stroke-width="0.5" opacity="0.28"/>
+                    <circle cx="80" cy="80" r="38" stroke="currentColor" stroke-width="0.5" opacity="0.22"/>
+                    <circle cx="80" cy="80" r="18" stroke="currentColor" stroke-width="0.5" opacity="0.18"/>
+                </svg>
+            </div>
+
+            <div class="contact__grid">
+                <div class="contact__left">
+                    <span class="contact__eyebrow">
+                        <span class="contact__eyebrow-dot"></span>
+                        <span>10 / Get in touch</span>
+                    </span>
+
+                    <h2 class="contact__title">
+                        <span>Let's</span>
+                        <span class="contact__title-accent">talk shop</span>
+                    </h2>
+
+                    <p class="contact__body">
+                        Happy to swap notes on home labs, self-hosting, certifications, the degree-apprentice route, or the work of turning chaotic IT estates into something coherent. Most emails get a reply inside a day or two.
+                    </p>
+
+                    <div class="contact__pills">
+                        <span class="contact__pill">Home lab</span>
+                        <span class="contact__pill">DevOps</span>
+                        <span class="contact__pill">Platform</span>
+                        <span class="contact__pill">Security</span>
+                        <span class="contact__pill">Self-hosting</span>
+                    </div>
+                </div>
+
+                <div class="contact__right">
+                    <a href="mailto:hello@gurveerarora.com" class="contact__mailbox">
+                        <span class="contact__mailbox-label">Email</span>
+                        <span class="contact__mailbox-address">
+                            hello@gurveerarora.com
+                            <svg viewBox="0 0 16 16" width="18" height="18" fill="none" aria-hidden="true">
+                                <path d="M3 8h10m0 0L9 4m4 4l-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <span class="contact__mailbox-hint">Usually replies within 48 hours</span>
+                    </a>
+
+                    <div class="contact__channels">
+                        <a href="https://github.com/Gurveer-Arora" class="contact__channel" target="_blank" rel="noopener">
+                            <span class="contact__channel-label">GitHub</span>
+                            <span class="contact__channel-handle">@Gurveer-Arora</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/gurveer-arora" class="contact__channel" target="_blank" rel="noopener">
+                            <span class="contact__channel-label">LinkedIn</span>
+                            <span class="contact__channel-handle">Gurveer Arora</span>
+                        </a>
+                        <a href="https://blog.gurveerarora.com" class="contact__channel">
+                            <span class="contact__channel-label">Journal</span>
+                            <span class="contact__channel-handle">blog.gurveerarora.com</span>
+                        </a>
+                        <a href="/portfolio" class="contact__channel">
+                            <span class="contact__channel-label">Portfolio</span>
+                            <span class="contact__channel-handle">gurveerarora.com/portfolio</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__brand">
+                <span class="brand__logo" aria-hidden="true">
+                    <svg viewBox="0 0 32 32" width="28" height="28" fill="none">
+                        <rect x="2" y="2" width="28" height="28" rx="14" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="16" cy="16" r="4" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span>Gurveer Arora &middot; London</span>
+            </div>
+            <div class="site-footer__middle">
+                <span>&copy; 2026</span>
+                <span>&middot;</span>
+                <span>No tracking, no cookies</span>
+            </div>
+            <div class="site-footer__tech">
+                Self-hosted on a Raspberry Pi 4B &middot; served via Cloudflare Tunnel
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
