@@ -14,9 +14,114 @@
       <span class="fleet-count" id="fleet-count" aria-live="polite"></span>
     </div>
 
-    <div id="fleet" data-endpoint="{{ url_for('api.vehiclecollection') }}"></div>
+    <div class="fleet-layout">
 
-    <nav class="fleet-pagination" id="fleet-pagination" aria-label="Fleet pages"></nav>
+      <!-- ============ FILTERS ============ -->
+      <!-- every name= matches an API query parameter exactly.
+           every value= appears in vehicle.csv, so nothing returns 0 rows. -->
+      <form class="filters" id="filters">
+
+        <h3 class="filters__title">Filters</h3>
+
+        <div class="filter">
+          <span class="filter__label">Branch</span>
+          <div class="filter__options">
+            <label><input type="checkbox" name="branch" value="Bristol">Bristol</label>
+            <label><input type="checkbox" name="branch" value="Luton">Luton</label>
+            <label><input type="checkbox" name="branch" value="Manchester">Manchester</label>
+          </div>
+        </div>
+
+        <div class="filter">
+          <span class="filter__label">Category</span>
+          <div class="filter__options">
+            <label><input type="checkbox" name="category" value="Budget">Budget</label>
+            <label><input type="checkbox" name="category" value="Compact">Compact</label>
+            <label><input type="checkbox" name="category" value="Coupe">Coupe</label>
+            <label><input type="checkbox" name="category" value="Family">Family</label>
+            <label><input type="checkbox" name="category" value="SUV">SUV</label>
+            <label><input type="checkbox" name="category" value="Sport">Sport</label>
+            <label><input type="checkbox" name="category" value="Truck">Truck</label>
+            <label><input type="checkbox" name="category" value="Van">Van</label>
+          </div>
+        </div>
+
+        <div class="filter">
+          <span class="filter__label">Colour</span>
+          <div class="filter__options filter__options--scroll">
+            <label><input type="checkbox" name="colour" value="Aquamarine">Aquamarine</label>
+            <label><input type="checkbox" name="colour" value="Blue">Blue</label>
+            <label><input type="checkbox" name="colour" value="Crimson">Crimson</label>
+            <label><input type="checkbox" name="colour" value="Fuscia">Fuscia</label>
+            <label><input type="checkbox" name="colour" value="Goldenrod">Goldenrod</label>
+            <label><input type="checkbox" name="colour" value="Green">Green</label>
+            <label><input type="checkbox" name="colour" value="Indigo">Indigo</label>
+            <label><input type="checkbox" name="colour" value="Khaki">Khaki</label>
+            <label><input type="checkbox" name="colour" value="Maroon">Maroon</label>
+            <label><input type="checkbox" name="colour" value="Mauv">Mauv</label>
+            <label><input type="checkbox" name="colour" value="Orange">Orange</label>
+            <label><input type="checkbox" name="colour" value="Pink">Pink</label>
+            <label><input type="checkbox" name="colour" value="Puce">Puce</label>
+            <label><input type="checkbox" name="colour" value="Purple">Purple</label>
+            <label><input type="checkbox" name="colour" value="Red">Red</label>
+            <label><input type="checkbox" name="colour" value="Teal">Teal</label>
+            <label><input type="checkbox" name="colour" value="Turquoise">Turquoise</label>
+            <label><input type="checkbox" name="colour" value="Violet">Violet</label>
+            <label><input type="checkbox" name="colour" value="Yellow">Yellow</label>
+          </div>
+        </div>
+
+        <label class="filter">
+          <span class="filter__label">Status</span>
+          <select name="status">
+            <option value="">Any</option>
+            <option value="AVAILABLE">Available</option>
+            <option value="RENTED">Rented</option>
+            <option value="DAMAGED">Damaged</option>
+            <option value="SERVICEREQ">Service required</option>
+          </select>
+        </label>
+
+        <div class="filter">
+          <span class="filter__label">Year</span>
+          <div class="filter__pair">
+            <input type="number" name="min_year" placeholder="1957">
+            <input type="number" name="max_year" placeholder="2013">
+          </div>
+        </div>
+
+        <div class="filter">
+          <span class="filter__label">Seats</span>
+          <div class="filter__pair">
+            <input type="number" name="min_seats" placeholder="2">
+            <input type="number" name="max_seats" placeholder="8">
+          </div>
+        </div>
+
+        <div class="filter">
+          <span class="filter__label">Day rate (£)</span>
+          <div class="filter__pair">
+            <input type="number" name="min_day_rate" placeholder="20">
+            <input type="number" name="max_day_rate" placeholder="90">
+          </div>
+        </div>
+
+        <label class="filter">
+          <span class="filter__label">Min fuel economy (mpg)</span>
+          <input type="number" name="min_fuel_economy" placeholder="3.1" step="0.1">
+        </label>
+
+        <button class="filters__clear" type="button" id="filters-clear">Clear all</button>
+
+      </form>
+
+      <!-- ============ RESULTS ============ -->
+      <div>
+        <div id="fleet" data-endpoint="{{ url_for('api.vehiclecollection') }}"></div>
+        <nav class="fleet-pagination" id="fleet-pagination" aria-label="Fleet pages"></nav>
+      </div>
+
+    </div>
 
   </section>
 {% endblock %}

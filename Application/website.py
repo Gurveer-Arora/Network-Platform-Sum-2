@@ -1,9 +1,15 @@
 import requests
 import hashlib
 from flask import Blueprint, render_template, request, redirect, url_for
+from user import user
  
 website_bp = Blueprint("website", __name__, template_folder="templates")
  
+
+@website_bp.context_processor
+def inject_user():
+    return {"user": user}
+
  
 @website_bp.route("/")
 def index():
