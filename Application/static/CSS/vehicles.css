@@ -1,0 +1,213 @@
+.fleet-count {
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+}
+
+.fleet-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 620px)  { .fleet-list { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1000px) { .fleet-list { grid-template-columns: repeat(3, 1fr); } }
+
+/* ─────────── CARD ─────────── */
+.vehicle-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.6rem 1.5rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+                border-color 0.3s,
+                box-shadow 0.35s;
+}
+
+.vehicle-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 16px 40px -20px rgba(27, 31, 28, 0.2);
+}
+
+.vehicle-card__ribbon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.vehicle-card__category {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+}
+
+/* ─────────── STATUS PILL ─────────── */
+/* class comes from the API value, lowercased:
+   AVAILABLE → .is-available, SERVICEREQ → .is-servicereq */
+.vehicle-card__status {
+    font-size: 0.76rem;
+    letter-spacing: 0.03em;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.vehicle-card__status.is-available  { background: var(--accent-soft); color: #2A4136; }
+.vehicle-card__status.is-rented     { background: var(--rule);        color: var(--ink-soft); }
+.vehicle-card__status.is-damaged    { background: #F3E3DF;            color: #7C3324; }
+.vehicle-card__status.is-servicereq { background: #F3E9D6;            color: #5E4510; }
+
+/* ─────────── IDENTITY ─────────── */
+.vehicle-card__name {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-top: 0.3rem;
+}
+
+.vehicle-card__identity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
+/* A paint chip reads faster than the word alone when you're comparing cars. */
+.vehicle-card__paint {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    background: var(--paint);
+    border: 1px solid rgba(27, 31, 28, 0.18);
+    flex-shrink: 0;
+}
+
+.vehicle-card__year {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-mute);
+    font-size: 0.85rem;
+}
+
+/* ─────────── RATE — the one loud element ─────────── */
+.vehicle-card__rate {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    padding: 0.5rem 0 0.2rem;
+}
+
+.vehicle-card__rate-value {
+    font-family: var(--serif);
+    font-size: 2.25rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.vehicle-card__rate-unit {
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+}
+
+/* ─────────── SPEC PLATE ─────────── */
+.vehicle-card__plate {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1rem;
+    margin-top: auto;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--rule);
+}
+
+.vehicle-card__plate > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--rule);
+}
+
+.vehicle-card__plate > .vehicle-card__plate-wide {
+    grid-column: 1 / -1;
+    border-bottom: none;
+}
+
+.vehicle-card__plate dt {
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    letter-spacing: 0.02em;
+}
+
+.vehicle-card__plate dd {
+    font-size: 0.88rem;
+    color: var(--ink);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+/* ─────────── PAGINATION ─────────── */
+.fleet-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.fleet-pagination:empty { display: none; }
+
+.fleet-page {
+    min-width: 2.4rem;
+    height: 2.4rem;
+    padding: 0 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+
+.fleet-page:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* the current page is the only disabled button */
+.fleet-page.is-current {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+    font-weight: 500;
+    cursor: default;
+}
+
+.fleet-page:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}

@@ -44,3 +44,7 @@ def validateLogin(email, password):
 @website_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     return render_template('signup.html')
+
+@website_bp.route('/vehicles')
+def vehicles():
+    return render_template('vehicles.html')

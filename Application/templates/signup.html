@@ -1,67 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-</head>
-<body>
-    
-    <form action="/signup">
-        <label for="fName">First Name</label>
-        <input type="text" name="fName" id="fName" required>
+{% extends "base.html" %}
+{% block title %}Sign up &middot; Car-Go{% endblock %}
 
-        <label for="lName">Last Name</label>
-        <input type="text" name="lName" id="lName" required>
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/auth.css') }}">
+{% endblock %}
 
-        <label for="dob">Date of Birth</label>
-        <input type="date" name="dob" id="dob" required>
+{% block content %}
+<main class="auth wrap">
+  <section class="box auth-box" aria-labelledby="signup-title">
 
-        <label for="gender">Gender</label>
-        <select name="gender" id="gender" required>
-            <option value="Male">Male</option>
-            <option value="Female">Femail</option>
-            <option value="Agender">Agender</option>
-            <option value="Bigender">Bigender</option>
-            <option value="Genderfluid">Genderfluid</option>
-            <option value="Genderqueer">Genderqueer</option>
-            <option value="Non-binary">Non-binary</option>
-            <option value="Polygender">Polygender</option>
-        </select>
+    <header class="auth-head">
+      <h1 class="auth-title" id="signup-title">Create an account</h1>
+    </header>
 
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" required>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <p class="alert alert-{{ category }}" role="alert">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
 
-        <label for="address">Address</label>
-        <input type="text" id="address" name="address" autocomplete="address-line1" required>
+    <form class="form" action="/signup" method="post">
 
-        <label for="city">City</label>
-        <input type="text" id="city" name="city" autocomplete="address-level2" required>
+      <!-- ============ ACCOUNT DETAILS ============ -->
+      <fieldset class="group">
+        <legend>Account details</legend>
+        <div class="group-fields">
 
-        <label for="country">Country</label>
-        <input type="text" id="country" name="country" autocomplete="country-name" required>
+          <div class="field col-4">
+            <label for="fName">First name</label>
+            <input type="text" id="fName" name="fName"
+                   autocomplete="given-name" required autofocus>
+          </div>
 
-        <label for="licenceNumber">Driving Licence Number</label>
-        <input type="text" name="licenceNumber" id="licenceNumber" required>
+          <div class="field col-4">
+            <label for="lName">Last name</label>
+            <input type="text" id="lName" name="lName"
+                   autocomplete="family-name" required>
+          </div>
 
-        <label for="passport">Passport Number</label>
-        <input type="number" name="passport" id="passport" required>
+          <div class="field col-4">
+            <label for="dob">Date of birth</label>
+            <input type="date" id="dob" name="dob"
+                   autocomplete="bday" required>
+          </div>
 
-        <label for="restrictions">Licence restrictions</label>
-        <select name="restrictions" id="restrictions" required>
-            <option value="Budget">Budget</option>
-            <option value="Compact">Compact</option>
-            <option value="Coupe">Coupe</option>
-            <option value="Family">Family</option>
-            <option value="Sport">Sport</option>
-            <option value="SUV">SUV</option>
-            <option value="Truck">Truck</option>
-            <option value="Van">Van</option>
-        </select>
+          <div class="field col-4">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email"
+                   autocomplete="email" placeholder="you@example.com" required>
+          </div>
 
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" required>
+          <div class="field col-4">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"
+                   autocomplete="new-password" minlength="8"
+                   aria-describedby="password-hint" required>
+          </div>
+
+          <div class="field col-4">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+              <option value="" disabled selected>Select&hellip;</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Agender">Agender</option>
+              <option value="Bigender">Bigender</option>
+              <option value="Genderfluid">Genderfluid</option>
+              <option value="Genderqueer">Genderqueer</option>
+              <option value="Non-binary">Non-binary</option>
+              <option value="Polygender">Polygender</option>
+            </select>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <!-- ============ ADDRESS ============ -->
+      <fieldset class="group">
+        <legend>Address</legend>
+        <div class="group-fields">
+
+          <div class="field col-12">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address"
+                   autocomplete="address-line1" required>
+          </div>
+
+          <div class="field col-6">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city"
+                   autocomplete="address-level2" required>
+          </div>
+
+          <div class="field col-6">
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country"
+                   autocomplete="country-name" required>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <!-- ============ LICENCE & ID ============ -->
+      <fieldset class="group">
+        <legend>Licence &amp; ID</legend>
+        <div class="group-fields">
+
+          <div class="field col-9">
+            <label for="licenceNumber">Driving licence number</label>
+            <input type="text" id="licenceNumber" name="licenceNumber"
+                   autocapitalize="characters" spellcheck="false" required>
+          </div>
+
+          <div class="field col-3">
+            <label for="restrictions">Licence restrictions</label>
+            <select id="restrictions" name="restrictions" required>
+              <option value="" disabled selected>Select&hellip;</option>
+              <option value="Budget">Budget</option>
+              <option value="Compact">Compact</option>
+              <option value="Coupe">Coupe</option>
+              <option value="Family">Family</option>
+              <option value="Sport">Sport</option>
+              <option value="SUV">SUV</option>
+              <option value="Truck">Truck</option>
+              <option value="Van">Van</option>
+            </select>
+          </div>
+
+          <div class="field col-9">
+            <label for="passport">Passport number</label>
+            <input type="text" id="passport" name="passport"
+                   autocapitalize="characters" spellcheck="false" required>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <button class="btn btn-solid btn-block btn-submit" type="submit">Create account</button>
+
     </form>
 
-</body>
-</html>
+    <p class="auth-foot">
+      Already have an account? <a class="link" href="/login">Log in</a>
+    </p>
+
+  </section>
+</main>
+{% endblock %}

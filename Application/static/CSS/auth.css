@@ -1,0 +1,179 @@
+.auth {
+  width: 100%;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(2rem, 5vw, 4rem);
+}
+
+.auth-box {
+  width: 100%;
+  min-height: 70%;
+  gap: 1.5rem;
+  padding: clamp(1.75rem, 4vw, 3.5rem);
+  box-shadow:
+    0 2px 4px rgba(27, 31, 28, 0.04),
+    0 12px 24px -8px rgba(27, 31, 28, 0.10),
+    0 32px 64px -24px rgba(27, 31, 28, 0.22);
+}
+
+/* kill the lift — these cards hold inputs you click into */
+.auth-box:hover {
+  transform: none;
+  border-color: var(--rule);
+  box-shadow:
+    0 2px 4px rgba(27, 31, 28, 0.04),
+    0 12px 24px -8px rgba(27, 31, 28, 0.10),
+    0 32px 64px -24px rgba(27, 31, 28, 0.22);
+}
+
+/* login has 2 fields — the card is wide, the column isn't */
+.auth-inner {
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 540px;
+  margin: auto;
+}
+
+.auth-head { display: grid; gap: 0.25rem; }
+.auth-title { font-size: clamp(1.9rem, 1.5rem + 1.2vw, 2.4rem); letter-spacing: -0.02em; }
+
+/* ─────────── FORM ─────────── */
+.form { display: grid; gap: 1.25rem; }
+
+.field { display: grid; align-content: start; gap: 0.5rem; }
+.field label { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+
+.field input,
+.field select {
+  width: 100%;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--ink);
+  background-color: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+.field input::placeholder { color: var(--ink-mute); }
+
+.field input:focus,
+.field select:focus { border-color: var(--accent); background-color: var(--surface); }
+
+/* date inputs collapse on iOS without this */
+.field input[type="date"] { -webkit-appearance: none; appearance: none; min-height: 3.8rem; }
+
+/* native select arrow swapped for one that matches the palette */
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 2.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' fill='none' stroke='%234A4E48' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.1rem center;
+  background-size: 12px 8px;
+}
+
+/* greys out the "Select…" placeholder until a real choice is made */
+.field select:invalid { color: var(--ink-mute); }
+
+/* ─────────── SECTIONS ─────────── */
+.group { border: 0; padding: 0; }
+
+/* float + width:100% stops the browser notching the fieldset's
+   top border around the legend — that's the stray line */
+.group legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 1.35rem;
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 1.2rem + 0.7vw, 1.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.form .group + .group {
+  margin-top: 2.25rem;
+  padding-top: 2.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+/* ─────────── 12-COLUMN FIELD GRID ─────────── */
+.group-fields {
+  clear: both;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.25rem;
+}
+
+.col-3  { grid-column: span 3;  }   /* 25%  */
+.col-4  { grid-column: span 4;  }   /* 33%  */
+.col-6  { grid-column: span 6;  }   /* 50%  */
+.col-9  { grid-column: span 9;  }   /* 75%  */
+.col-12 { grid-column: span 12; }   /* 100% */
+
+.hint { max-width: none; font-size: 0.82rem; color: var(--ink-mute); }
+
+/* big full-width submit — .btn is built for <a>, this fixes it for <button> */
+.btn-block {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 1rem 1.25rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* on the wide signup card, don't stretch the button to 1200px */
+.btn-submit { max-width: 320px; margin-inline: auto; }
+
+/* ─────────── FOOT ─────────── */
+.auth-foot {
+  max-width: none;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-size: 0.92rem;
+}
+
+.auth-foot .link { font-weight: 500; color: var(--accent); border-bottom-color: currentColor; }
+
+/* ─────────── FLASH MESSAGES ─────────── */
+.alert {
+  max-width: none;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  background: var(--bg);
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.alert-error {
+  border-color: #C9A0A0;
+  border-left-color: #9E4B3C;
+  background: #FBF1EF;
+  color: #7A3326;
+}
+
+/* ─────────── RESPONSIVE ─────────── */
+@media (max-width: 1000px) {
+  .col-4 { grid-column: span 6; }   /* 3 per row becomes 2 */
+  .col-9 { grid-column: span 8; }
+  .col-3 { grid-column: span 4; }
+}
+
+@media (max-width: 600px) {
+  .col-3, .col-4, .col-6, .col-9 { grid-column: span 12; }
+  .btn-submit { max-width: none; }
+}

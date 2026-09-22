@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Car-Go{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="nav">
+    <div class="wrap nav-inner">
+
+      <a class="brand" href="/">
+        <img src="{{ url_for('static', filename='images/cargo-logo-transparent.png') }}" alt="Car-Go Logo" class="cargo-logo logo">
+      </a>
+
+      <nav class="nav-links" aria-label="Main">
+        <a href="/vehicles">Rent a Car</a>
+        <a href="#">Ipsum</a>
+        <a href="#">Dolor</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn" href="/login">Log in</a>
+        <a class="btn btn-solid" href="/signup">Sign up</a>
+      </div>
+
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="wrap footer-inner">
+
+      <a class="brand" href="#">
+        <img src="{{ url_for('static', filename='images/cargo-logo-transparent.png') }}" alt="Car-Go Logo" class="cargo-logo logo">
+      </a>
+
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#">Lorem</a>
+        <a href="#">Ipsum</a>
+        <a href="#">Dolor</a>
+      </nav>
+
+      <p class="muted">&copy; 2026</p>
+
+    </div>
+  </footer>
+
+</body>
+</html>

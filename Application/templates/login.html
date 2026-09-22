@@ -1,21 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car-Go Login</title>
-</head>
-<body>
-    
-    <form action="/login" method="POST">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+{% extends "base.html" %}
+{% block title %}Log in &middot; Car-Go{% endblock %}
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/auth.css') }}">
+{% endblock %}
 
-        <button type="submit">Login</button>
-    </form>
+{% block content %}
+<main class="auth wrap">
+  <section class="box auth-box" aria-labelledby="login-title">
+    <div class="auth-inner">
 
-</body>
-</html>
+      <header class="auth-head">
+        <h1 class="auth-title" id="login-title">Log in</h1>
+        <p class="muted">Welcome back to Car-Go.</p>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <p class="alert alert-{{ category }}" role="alert">{{ message }}</p>
+        {% endfor %}
+      {% endwith %}
+
+      <form class="form" action="/login" method="post">
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email"
+                 autocomplete="email" placeholder="you@example.com" required autofocus>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password"
+                 autocomplete="current-password" placeholder="Enter your password" required>
+        </div>
+
+        <button class="btn btn-solid btn-block" type="submit">Log in</button>
+
+      </form>
+
+      <p class="auth-foot">
+        New to Car-Go? <a class="link" href="/signup">Create an account</a>
+      </p>
+
+    </div>
+  </section>
+</main>
+{% endblock %}

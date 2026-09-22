@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Our fleet &middot; Car-Go{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/vehicles.css') }}">
+  <script src="{{ url_for('static', filename='JS/vehicles.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+  <section class="section wrap">
+
+    <div class="section-head">
+      <h2 class="section-title">Our Fleet</h2>
+      <span class="fleet-count" id="fleet-count" aria-live="polite"></span>
+    </div>
+
+    <div id="fleet" data-endpoint="{{ url_for('api.vehiclecollection') }}"></div>
+
+    <nav class="fleet-pagination" id="fleet-pagination" aria-label="Fleet pages"></nav>
+
+  </section>
+{% endblock %}
