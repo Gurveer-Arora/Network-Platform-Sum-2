@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Car-Go{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/vehicles.css') }}">
+{% endblock %}
+
 {% block content %}
   <main>
 
     <!-- ============ ABOUT ============ -->
     <section class="section wrap">
 
-      <div class="section-head">
+      <div>
         {% if user.is_logged_in %}
           <h2 class="section-title">Welcome Back {{ first_name }} {{ last_name }}!</h2>
         {% else %}
@@ -15,95 +19,44 @@
         {% endif %}
       </div>
 
-      <div class="grid-2">
-
-        <!-- full width -->
-        <article class="box box-wide">
-          <h3 class="box-title">Sed do eiusmod tempor incididunt</h3>
-          <p class="lede">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-            mollit anim id est laborum.</p>
-        </article>
-
-        <!-- half width -->
-        <article class="box">
-          <h3 class="box-title">Lorem ipsum</h3>
-          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-            laudantium, totam rem aperiam.</p>
-          <ul class="list">
-            <li>Nemo enim ipsam voluptatem</li>
-            <li>Quia voluptas sit aspernatur</li>
-            <li>Neque porro quisquam est</li>
-          </ul>
-        </article>
-
-        <!-- half width -->
-        <article class="box">
-          <h3 class="box-title">Dolor sit amet</h3>
-          <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-            voluptatum deleniti atque.</p>
-          <ul class="list">
-            <li>Temporibus autem quibusdam</li>
-            <li>Itaque earum rerum hic tenetur</li>
-            <li>Nam libero tempore soluta</li>
-          </ul>
-        </article>
-
-      </div>
-    </section>
+      <br>
 
     <!-- ============ FOR YOU ============ -->
-    <section class="section wrap">
 
       <div class="section-head">
         <h2 class="section-title">For you</h2>
         <a class="link" href="/vehicles">View all Vehicles</a>
       </div>
 
-      <div class="grid-3">
+      <div class="fleet-list">
 
-        <article class="card">
-          <div class="card-top"><span class="tag">Lorem</span><span class="muted">2021</span></div>
-          <h3 class="card-title">Lorem ipsum dolor</h3>
-          <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <div class="card-foot"><span class="value">1,240</span><span class="muted">Consectetur</span></div>
-        </article>
+        {% for vehicle in vehicles %}
+          <a class="vehicle-card" href="/vehicles/{{ vehicle.id }}">
+            <div class="vehicle-card__ribbon">
+              <span class="vehicle-card__category">{{ vehicle.category }}</span>
+              <span class="vehicle-card__status is-{{ vehicle.status|lower }}">{{ vehicle.status }}</span>
+            </div>
 
-        <article class="card">
-          <div class="card-top"><span class="tag">Ipsum</span><span class="muted">2022</span></div>
-          <h3 class="card-title">Consectetur adipiscing</h3>
-          <p>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
-          <div class="card-foot"><span class="value">3,860</span><span class="muted">Adipiscing</span></div>
-        </article>
+            <h3 class="vehicle-card__name">{{ vehicle.make }} {{ vehicle.model }}</h3>
 
-        <article class="card">
-          <div class="card-top"><span class="tag">Dolor</span><span class="muted">2020</span></div>
-          <h3 class="card-title">Tempor incididunt</h3>
-          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
-          <div class="card-foot"><span class="value">742</span><span class="muted">Eiusmod</span></div>
-        </article>
+            <p class="vehicle-card__identity">
+              <span class="vehicle-card__paint" style="--paint: {{ vehicle.colour|lower }}"></span>
+              {{ vehicle.colour }}
+              <span class="vehicle-card__year">{{ vehicle.year }}</span>
+            </p>
 
-        <article class="card">
-          <div class="card-top"><span class="tag">Amet</span><span class="muted">2023</span></div>
-          <h3 class="card-title">Ut labore et dolore</h3>
-          <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
-          <div class="card-foot"><span class="value">5,015</span><span class="muted">Tempor</span></div>
-        </article>
+            <p class="vehicle-card__rate">
+              <span class="vehicle-card__rate-value">£{{ vehicle.dayRate|int }}</span>
+              <span class="vehicle-card__rate-unit">per day</span>
+            </p>
 
-        <article class="card">
-          <div class="card-top"><span class="tag">Elit</span><span class="muted">2021</span></div>
-          <h3 class="card-title">Magna aliqua enim</h3>
-          <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
-          <div class="card-foot"><span class="value">2,398</span><span class="muted">Laboris</span></div>
-        </article>
-
-        <article class="card">
-          <div class="card-top"><span class="tag">Sed</span><span class="muted">2019</span></div>
-          <h3 class="card-title">Quis nostrud veniam</h3>
-          <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet consectetur.</p>
-          <div class="card-foot"><span class="value">918</span><span class="muted">Commodo</span></div>
-        </article>
+            <dl class="vehicle-card__plate">
+              <div><dt>Seats</dt><dd>{{ vehicle.numberSeats }}</dd></div>
+              <div><dt>Economy</dt><dd>{{ '%g'|format(vehicle.fuelEconomy) }} mpg</dd></div>
+              <div class="vehicle-card__plate-wide"><dt>Collect from</dt><dd>{{ vehicle.branch }}</dd></div>
+            </dl>
+          </a>
+        {% endfor %}
 
       </div>
     </section>

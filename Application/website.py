@@ -15,7 +15,16 @@ def inject_user():
  
 @website_bp.route("/")
 def index():
-    return render_template("index.html", first_name=user.first_name, last_name=user.last_name)
+    headers = {}
+    params = {"status": "AVAILABLE"}
+    if user.is_logged_in:
+        headers["Authorization"] = f"Bearer {user.session_token}"
+        if user.licence_restrictions:
+            params["category"] = user.licence_restrictions
+
+    response = requests.get(f"{API_BASE}/vehicles", params=params, headers=headers)
+    vehicles = response.json()[:6]
+    return render_template("index.html", first_name=user.first_name, last_name=user.last_name, vehicles=vehicles)
 
 
 @website_bp.route('/login', methods=['GET', 'POST'])
