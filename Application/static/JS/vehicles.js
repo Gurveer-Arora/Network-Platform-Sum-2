@@ -20,9 +20,9 @@ let vehicles = [];
 // --------------------------------------------------------------------------
 function buildCard(vehicle) {
     const card = document.createElement("li");
-    card.className = "vehicle-card";
 
     card.innerHTML = `
+      <a class="vehicle-card" href="/vehicles/${vehicle.id}">
       <div class="vehicle-card__ribbon">
         <span class="vehicle-card__category">${vehicle.category}</span>
         <span class="vehicle-card__status is-${vehicle.status.toLowerCase()}">${vehicle.status}</span>
@@ -46,6 +46,7 @@ function buildCard(vehicle) {
         <div><dt>Economy</dt><dd>${vehicle.fuelEconomy} mpg</dd></div>
         <div class="vehicle-card__plate-wide"><dt>Collect from</dt><dd>${vehicle.branch}</dd></div>
       </dl>
+      </a>
     `;
     return card;
 }
@@ -53,15 +54,23 @@ function buildCard(vehicle) {
 // --------------------------------------------------------------------------
 // Filters — these DO hit the API
 // --------------------------------------------------------------------------
+/** URLSearchParams escapes commas to %2C. The API wants them literal. */
+function queryString(params) {
+    return params.toString().replace(/%2C/g, ",");
+}
+
 function applyFilters(event) {
     event.preventDefault();
 
+    // Several ticked boxes share one name, so join them: branch=Bristol,Luton
     const params = new URLSearchParams();
     for (const [name, value] of new FormData(filters)) {
-        if (value) params.append(name, value);
+        if (!value) continue;
+        const already = params.get(name);
+        params.set(name, already ? `${already},${value}` : value);
     }
 
-    history.pushState({}, "", `${location.pathname}?${params}`);
+    history.pushState({}, "", `${location.pathname}?${queryString(params)}`);
     loadFleet();
 }
 
@@ -71,7 +80,7 @@ function fillFilters() {
 
     for (const field of filters.elements) {
         if (field.type === "checkbox") {
-            field.checked = params.getAll(field.name).includes(field.value);
+            field.checked = (params.get(field.name) || "").split(",").includes(field.value);
         } else if (params.has(field.name)) {
             field.value = params.get(field.name);
         }
@@ -122,7 +131,7 @@ function currentPage() {
 function goToPage(page) {
     const params = new URLSearchParams(location.search);
     params.set("page", page);
-    history.pushState({}, "", `${location.pathname}?${params}`);
+    history.pushState({}, "", `${location.pathname}?${queryString(params)}`);
 
     showPage();
     document.querySelector(".section-head").scrollIntoView({ block: "start" });
@@ -149,7 +158,7 @@ async function loadFleet() {
     const params = new URLSearchParams(location.search);
     params.delete("page");
 
-    const query = params.toString();
+    const query = queryString(params);
     const response = await fetch(query ? `${grid.dataset.endpoint}?${query}` : grid.dataset.endpoint);
 
     vehicles = await response.json();

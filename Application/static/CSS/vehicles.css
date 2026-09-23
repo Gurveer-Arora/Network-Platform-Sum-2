@@ -19,6 +19,9 @@
     gap: 1rem;
 }
 
+/* the <li> holds one <a class="vehicle-card">; grid stretches it to the row height */
+.fleet-list > li { display: grid; }
+
 @media (min-width: 780px)  { .fleet-list { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1200px) { .fleet-list { grid-template-columns: repeat(3, 1fr); } }
 

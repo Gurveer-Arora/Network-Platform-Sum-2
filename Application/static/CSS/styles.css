@@ -181,14 +181,11 @@ p { color: var(--ink-soft); max-width: 62ch; }
 
 .footer-inner {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
 }
-
-.footer-links { display: flex; gap: 1.5rem; font-size: 0.88rem; color: var(--ink-soft); }
-.footer-links a:hover { color: var(--accent); }
 
 /* ─────────── RESPONSIVE ─────────── */
 @media (max-width: 900px) {

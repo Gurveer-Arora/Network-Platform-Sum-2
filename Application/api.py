@@ -16,6 +16,7 @@ For quick standalone testing it can also be started directly with:
 """
 import csv          # reading and writing the spreadsheet-style data files
 import os           # file and folder handling
+import re           # used to split apart a date of birth
 import secrets      # secure random values and safe comparisons (used for logins)
 import tempfile     # temporary files, used to save data safely
 import threading    # used to stop two requests changing the data at the same moment
@@ -90,6 +91,10 @@ RANGE_FILTERS = {
     "day_rate": ("dayRate", float),
     "fuel_economy": ("fuelEconomy", float),
 }
+
+# The only fields a PATCH request may change, and how to check each one.
+# Exactly one of these must be sent per request (see parse_patch_body).
+PATCHABLE_FIELDS = {"status", "dayRate", "branch"}
 
 # A "blueprint" is a self-contained bundle of web addresses that gets plugged
 # into the main application, rather than being an application itself. Every
@@ -251,6 +256,15 @@ def find_customer_by_email(email):
     return None
 
 
+def find_customer_by_id(customer_id):
+    """Return the customer with this customerId, or None."""
+    customer_id = str(customer_id).strip()
+    for customer in CUSTOMERS:
+        if (customer.get("customerId") or "").strip() == customer_id:
+            return customer
+    return None
+
+
 # The customers, loaded when the service starts. Signing up a new customer
 # adds to this list and writes it back to customer.csv (see SignupCollection).
 CUSTOMERS = load_customers()
@@ -297,6 +311,24 @@ def get_role(lenient=False):
             return None
         abort(401, message="Invalid or expired token. Log in again via POST /authentications.")
     return "admin" if session["admin"] else "user"
+
+
+def get_current_customer():
+    """Return the full customer record for the caller's token, or abort.
+
+    Used by endpoints (like /me) where the caller must be logged in as a
+    specific customer, rather than just needing "any admin" or "any user".
+    """
+    header = request.headers.get("Authorization")
+    scheme, _, token = header.partition(" ") if header else ("", "", "")
+    session = SESSIONS.get(token.strip()) if scheme.lower() == "bearer" else None
+    if session is None:
+        abort(401, message="Authentication required: send 'Authorization: Bearer <token>'.")
+    customer = find_customer_by_id(session["customerId"])
+    if customer is None:
+        # The customer's account no longer exists, even though their token does.
+        abort(401, message="Account no longer exists. Please log in again.")
+    return customer
 
 
 def require_admin():
@@ -392,6 +424,26 @@ SIGNUP_REQUIRED_FIELDS = [
 ]
 
 
+def split_date(date_text):
+    """Split a YYYY-MM-DD (or YYYY/MM/DD) date into (year, month, day) text.
+
+    Aborts with a 400 error if the date is not in that shape, so a bad date
+    of birth is caught at signup rather than being stored wrong and only
+    noticed later.
+    """
+    parts = re.split(r"[-/]", date_text.strip())
+    if (
+        len(parts) != 3
+        or not all(part.isdigit() for part in parts)
+        or len(parts[0]) != 4  # year first, e.g. "1995"
+        or not (1 <= int(parts[1]) <= 12)  # month
+        or not (1 <= int(parts[2]) <= 31)  # day
+    ):
+        abort(400, message="'dob' must be in the format YYYY-MM-DD, e.g. 1995-05-05.")
+    year, month, day = parts
+    return year, month.zfill(2), day.zfill(2)
+
+
 def parse_signup_data(data):
     """Check the JSON body for a signup request and return the clean fields.
 
@@ -416,7 +468,52 @@ def parse_signup_data(data):
 
     if errors:
         abort(400, message="; ".join(errors.values()))
+
+    # The date of birth is expected as YYYY-MM-DD (the usual format a date
+    # picker sends) and is stored as DD/MM/YYYY to match the rest of the CSV.
+    year, month, day = split_date(customer["dob"])
+    customer["dob"] = f"{day}/{month}/{year}"
+
     return customer
+
+
+def parse_patch_body(data):
+    """Check a PATCH /fleet/<id> body and return the one field to change.
+
+    Exactly one of status, dayRate or branch must be supplied; anything else
+    (none of them, more than one, or an unrecognised field) is refused, so it
+    is always clear which single thing a request changed.
+    """
+    if not isinstance(data, dict):
+        abort(400, message="Request body must be a JSON object.")
+
+    sent_fields = [field for field in data if field in PATCHABLE_FIELDS]
+    unknown_fields = [field for field in data if field not in PATCHABLE_FIELDS]
+    if unknown_fields:
+        abort(400, message=f"Unrecognised field(s): {', '.join(unknown_fields)}. "
+                            f"Only one of {', '.join(sorted(PATCHABLE_FIELDS))} may be sent.")
+    if len(sent_fields) != 1:
+        abort(400, message=f"Exactly one of {', '.join(sorted(PATCHABLE_FIELDS))} must be sent.")
+
+    field = sent_fields[0]
+    value = data[field]
+
+    if field == "status":
+        if not isinstance(value, str) or value.strip().upper() not in VALID_STATUSES:
+            abort(400, message=f"'status' must be one of: {', '.join(sorted(VALID_STATUSES))}.")
+        return field, value.strip().upper()
+
+    if field == "dayRate":
+        # bool is technically a number in Python (True == 1), so it is
+        # excluded explicitly, the same way as for vehicleId elsewhere.
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or value <= 0:
+            abort(400, message="'dayRate' must be a positive number.")
+        return field, float(value)
+
+    # field == "branch"
+    if not isinstance(value, str) or not value.strip():
+        abort(400, message="'branch' must be non-empty text.")
+    return field, value.strip()
 
 
 def parse_new_vehicle(data):
@@ -479,12 +576,27 @@ class VehicleCollection(Resource):
         role = get_role(lenient=True)
         results = list(VEHICLES)
 
-        # Apply the text filters. Each filter narrows the list further, so
-        # combining several (e.g. branch and colour) gives vehicles matching all of them.
+        # Apply the text filters. Each one accepts a single value, or several
+        # separated by commas to match any of them, e.g. branch=Bristol,Luton
+        # matches vehicles in either branch. Combining different filters (e.g.
+        # branch and colour) narrows the list further, so a vehicle must match
+        # at least one value in every filter that was used.
         for name in TEXT_FILTERS:
-            value = request.args.get(name)
-            if value:
-                results = [v for v in results if v[name].lower() == value.strip().lower()]
+            raw = request.args.get(name)
+            if raw:
+                wanted = {part.strip().lower() for part in raw.split(",") if part.strip()}
+                results = [v for v in results if v[name].lower() in wanted]
+
+        # Searching by registration (VRM) works the same way as the filters
+        # above, but is admin-only, since VRM is itself an admin-only field.
+        # A non-admin sending this filter is told plainly why it is refused,
+        # rather than the filter being silently ignored.
+        vrm_search = request.args.get("vrm")
+        if vrm_search:
+            if role != "admin":
+                abort(403, message="Admin access required to search by VRM.")
+            wanted = {part.strip().lower() for part in vrm_search.split(",") if part.strip()}
+            results = [v for v in results if v["vrm"].lower() in wanted]
 
         # Apply the min/max filters. Vehicles with no value for the field
         # (e.g. no fuel economy) are left out when that filter is used.
@@ -544,7 +656,9 @@ class FleetCollection(Resource):
 
 
 class FleetItem(Resource):
-    """DELETE /fleet/<id> - remove a vehicle from the fleet. Admins only."""
+    """DELETE /fleet/<id> - remove a vehicle from the fleet. Admins only.
+    PATCH  /fleet/<id> - change one field of a vehicle. Admins only.
+    """
 
     def delete(self, vehicle_id):
         require_admin()
@@ -557,6 +671,22 @@ class FleetItem(Resource):
             VEHICLES.remove(vehicle)
             save_vehicles()
         return {"message": f"Vehicle {vehicle_id} has been removed from the fleet."}, 200
+
+    def patch(self, vehicle_id):
+        """Change exactly one of a vehicle's status, day rate or branch.
+
+        Body: {"status": "..."} or {"dayRate": ...} or {"branch": "..."}.
+        This is a direct override (e.g. for a correction), so, unlike
+        /rentals and /returns, it does not check what the current status is
+        before changing it.
+        """
+        require_admin()
+        field, value = parse_patch_body(request.get_json(silent=True))
+        with _lock:
+            vehicle = find_vehicle(vehicle_id)
+            vehicle[field] = value
+            save_vehicles()
+        return {"message": f"Vehicle {vehicle_id}'s {field} has been updated.", field: value}, 200
 
 
 class AuthenticationCollection(Resource):
@@ -631,6 +761,20 @@ class LogoutCollection(Resource):
             abort(401, message="Invalid or expired token. You may already be logged out.")
         del SESSIONS[token]
         return {"message": "Logged out."}, 200
+
+
+class MeCollection(Resource):
+    """GET /me - the logged-in customer's own details.
+
+    Reads the token from the Authorization header, finds which customer it
+    belongs to, and returns that customer's record. The password, hashed
+    password and salt columns are left out, since there is no reason for the
+    front end to ever handle those.
+    """
+
+    def get(self):
+        customer = get_current_customer()
+        return {k: v for k, v in customer.items() if k not in ("password", "hashedPassword", "salt")}, 200
 
 
 class SignupCollection(Resource):
@@ -745,6 +889,7 @@ api.add_resource(FleetCollection, "/fleet")
 api.add_resource(FleetItem, "/fleet/<int:vehicle_id>")
 api.add_resource(AuthenticationCollection, "/authentications")
 api.add_resource(LogoutCollection, "/logout")
+api.add_resource(MeCollection, "/me")
 api.add_resource(SignupCollection, "/signup")
 api.add_resource(RentalCollection, "/rentals")
 api.add_resource(ReturnCollection, "/returns")

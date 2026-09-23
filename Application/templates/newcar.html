@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block title %}Add a vehicle &middot; Car-Go{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="auth wrap">
+  <section class="box auth-box" aria-labelledby="newcar-title">
+
+    <header class="auth-head">
+      <h1 class="auth-title" id="newcar-title">Add a vehicle</h1>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <p class="alert alert-{{ category }}" role="alert">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+
+    <form class="form" action="/newcar" method="post">
+
+      <!-- ============ VEHICLE ============ -->
+      <fieldset class="group">
+        <legend>Vehicle</legend>
+        <div class="group-fields">
+
+          <div class="field col-4">
+            <label for="make">Make</label>
+            <input type="text" id="make" name="make" required autofocus>
+          </div>
+
+          <div class="field col-4">
+            <label for="model">Model</label>
+            <input type="text" id="model" name="model" required>
+          </div>
+
+          <div class="field col-4">
+            <label for="year">Year</label>
+            <input type="number" id="year" name="year" required>
+          </div>
+
+          <div class="field col-4">
+            <label for="colour">Colour</label>
+            <select id="colour" name="colour" required>
+              <option value="" disabled selected>Select&hellip;</option>
+              <option value="Aquamarine">Aquamarine</option>
+              <option value="Blue">Blue</option>
+              <option value="Crimson">Crimson</option>
+              <option value="Fuscia">Fuscia</option>
+              <option value="Goldenrod">Goldenrod</option>
+              <option value="Green">Green</option>
+              <option value="Indigo">Indigo</option>
+              <option value="Khaki">Khaki</option>
+              <option value="Maroon">Maroon</option>
+              <option value="Mauv">Mauv</option>
+              <option value="Orange">Orange</option>
+              <option value="Pink">Pink</option>
+              <option value="Puce">Puce</option>
+              <option value="Purple">Purple</option>
+              <option value="Red">Red</option>
+              <option value="Teal">Teal</option>
+              <option value="Turquoise">Turquoise</option>
+              <option value="Violet">Violet</option>
+              <option value="Yellow">Yellow</option>
+            </select>
+          </div>
+
+          <div class="field col-4">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+              <option value="" disabled selected>Select&hellip;</option>
+              <option value="Budget">Budget</option>
+              <option value="Compact">Compact</option>
+              <option value="Coupe">Coupe</option>
+              <option value="Family">Family</option>
+              <option value="SUV">SUV</option>
+              <option value="Sport">Sport</option>
+              <option value="Truck">Truck</option>
+              <option value="Van">Van</option>
+            </select>
+          </div>
+
+          <div class="field col-4">
+            <label for="numberSeats">Seats</label>
+            <input type="number" id="numberSeats" name="numberSeats" required>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <!-- ============ IDENTIFICATION ============ -->
+      <fieldset class="group">
+        <legend>Identification</legend>
+        <div class="group-fields">
+
+          <div class="field col-6">
+            <label for="vin">VIN</label>
+            <input type="text" id="vin" name="vin"
+                   autocapitalize="characters" spellcheck="false" required>
+          </div>
+
+          <div class="field col-6">
+            <label for="vrm">Registration</label>
+            <input type="text" id="vrm" name="vrm"
+                   autocapitalize="characters" spellcheck="false" required>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <!-- ============ RENTAL ============ -->
+      <fieldset class="group">
+        <legend>Rental</legend>
+        <div class="group-fields">
+
+          <div class="field col-4">
+            <label for="dayRate">Day rate (£)</label>
+            <input type="number" id="dayRate" name="dayRate" step="1" required>
+          </div>
+
+          <div class="field col-4">
+            <label for="fuelEconomy">Fuel economy (mpg)</label>
+            <input type="number" id="fuelEconomy" name="fuelEconomy" step="0.1" required>
+          </div>
+
+          <div class="field col-4">
+            <label for="branch">Branch</label>
+            <select id="branch" name="branch" required>
+              <option value="" disabled selected>Select&hellip;</option>
+              <option value="Bristol">Bristol</option>
+              <option value="Luton">Luton</option>
+              <option value="Manchester">Manchester</option>
+            </select>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <button class="btn btn-solid btn-block btn-submit" type="submit">Add vehicle</button>
+
+    </form>
+
+    <p class="auth-foot">
+      <a class="link" href="/vehicles">Back to the fleet</a>
+    </p>
+
+  </section>
+</main>
+{% endblock %}

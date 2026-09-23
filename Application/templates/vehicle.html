@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}{{ vehicle.make }} {{ vehicle.model }} &middot; Car-Go{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/vehicles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/vehicle.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="section wrap">
+
+  <a class="link vehicle-back" href="/vehicles">Back to the fleet</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="vehicle-head">
+    <div>
+      <span class="tag">{{ vehicle.category }}</span>
+      <h1 class="vehicle-head__name">{{ vehicle.make }} {{ vehicle.model }}</h1>
+      <p class="vehicle-head__sub">
+        <span class="vehicle-card__paint" style="--paint: {{ vehicle.colour|lower }}"></span>
+        {{ vehicle.colour }}, {{ vehicle.year }}
+      </p>
+    </div>
+
+    <div class="vehicle-head__aside">
+      <span class="vehicle-card__status is-{{ vehicle.status|lower }}">{{ vehicle.status }}</span>
+      <p class="vehicle-card__rate">
+        <span class="vehicle-card__rate-value">£{{ vehicle.dayRate|int }}</span>
+        <span class="vehicle-card__rate-unit">per day</span>
+      </p>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <p class="alert alert-{{ category }}" role="alert">{{ message }}</p>
+    {% endfor %}
+  {% endwith %}
+
+  <div class="vehicle-layout">
+
+    <!-- ============ SPECIFICATION ============ -->
+    <div class="box">
+      <h2 class="box-title">Specification</h2>
+
+      <dl class="spec">
+        <div><dt>Make</dt><dd>{{ vehicle.make }}</dd></div>
+        <div><dt>Model</dt><dd>{{ vehicle.model }}</dd></div>
+        <div><dt>Year</dt><dd>{{ vehicle.year }}</dd></div>
+        <div><dt>Colour</dt><dd>{{ vehicle.colour }}</dd></div>
+        <div><dt>Category</dt><dd>{{ vehicle.category }}</dd></div>
+        <div><dt>Seats</dt><dd>{{ vehicle.numberSeats }}</dd></div>
+        <div><dt>Fuel economy</dt><dd>{{ vehicle.fuelEconomy }} mpg</dd></div>
+        <div><dt>Day rate</dt><dd>£{{ vehicle.dayRate|int }}</dd></div>
+        <div><dt>Status</dt><dd>{{ vehicle.status }}</dd></div>
+        <div><dt>Branch</dt><dd>{{ vehicle.branch }}</dd></div>
+        <div><dt>Vehicle ID</dt><dd>{{ vehicle.id }}</dd></div>
+
+        {% if user.is_admin %}
+          <div><dt>VIN</dt><dd>{{ vehicle.vin }}</dd></div>
+          <div><dt>Registration</dt><dd>{{ vehicle.vrm }}</dd></div>
+        {% endif %}
+      </dl>
+    </div>
+
+    <!-- ============ ACTIONS ============ -->
+    <div class="vehicle-actions">
+
+      <!-- everyone -->
+      <div class="box">
+        <h2 class="box-title">Rent this vehicle</h2>
+
+        {% if vehicle.status == "AVAILABLE" %}
+          <p class="muted">£{{ vehicle.dayRate|int }} per day, collect from {{ vehicle.branch }}.</p>
+          <form method="post" action="/vehicles/{{ vehicle.id }}/rent">
+            <button class="btn btn-solid btn-block" type="submit">Rent now</button>
+          </form>
+        {% else %}
+          <p class="muted">This vehicle is {{ vehicle.status }} and cannot be rented right now.</p>
+        {% endif %}
+      </div>
+
+      <!-- ============ ADMIN ONLY ============ -->
+      {% if user.is_admin %}
+      <div class="box admin-panel">
+        <h2 class="box-title">Manage vehicle</h2>
+
+        <!-- return: only when the API will accept it -->
+        {% if vehicle.status in ["RENTED", "SERVICEREQ"] %}
+        <form class="action" method="post" action="/vehicles/{{ vehicle.id }}/return">
+          <span class="action__label">Return</span>
+          <div class="return-row">
+            {% if vehicle.status == "RENTED" %}
+              <button class="btn btn-solid" type="submit" name="status" value="AVAILABLE">Ready to rent</button>
+              <button class="btn" type="submit" name="status" value="SERVICEREQ">Needs service</button>
+            {% else %}
+              <button class="btn btn-solid" type="submit" name="status" value="AVAILABLE">Mark as serviced</button>
+            {% endif %}
+          </div>
+        </form>
+        {% endif %}
+
+        <!-- change status -->
+        <form class="action" method="post" action="/vehicles/{{ vehicle.id }}/status">
+          <span class="action__label">Status</span>
+          <div class="action__row">
+            <select name="status">
+              <option value="AVAILABLE"  {% if vehicle.status == "AVAILABLE"  %}selected{% endif %}>Available</option>
+              <option value="RENTED"     {% if vehicle.status == "RENTED"     %}selected{% endif %}>Rented</option>
+              <option value="DAMAGED"    {% if vehicle.status == "DAMAGED"    %}selected{% endif %}>Damaged</option>
+              <option value="SERVICEREQ" {% if vehicle.status == "SERVICEREQ" %}selected{% endif %}>Service required</option>
+            </select>
+            <button class="btn" type="submit">Update</button>
+          </div>
+        </form>
+
+        <!-- change day rate -->
+        <form class="action" method="post" action="/vehicles/{{ vehicle.id }}/rate">
+          <span class="action__label">Day rate (£)</span>
+          <div class="action__row">
+            <input type="number" name="dayRate" value="{{ vehicle.dayRate|int }}" step="1" min="0">
+            <button class="btn" type="submit">Update</button>
+          </div>
+        </form>
+
+        <!-- change branch -->
+        <form class="action" method="post" action="/vehicles/{{ vehicle.id }}/branch">
+          <span class="action__label">Branch</span>
+          <div class="action__row">
+            <select name="branch">
+              <option value="Bristol"    {% if vehicle.branch == "Bristol"    %}selected{% endif %}>Bristol</option>
+              <option value="Luton"      {% if vehicle.branch == "Luton"      %}selected{% endif %}>Luton</option>
+              <option value="Manchester" {% if vehicle.branch == "Manchester" %}selected{% endif %}>Manchester</option>
+            </select>
+            <button class="btn" type="submit">Update</button>
+          </div>
+        </form>
+
+        <hr class="admin-rule">
+
+        <!-- delete -->
+        <form method="post" action="/vehicles/{{ vehicle.id }}/delete"
+              onsubmit="return confirm('Delete {{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.vrm }}) from the fleet? This cannot be undone.')">
+          <button class="btn btn-danger btn-block" type="submit">Delete from fleet</button>
+        </form>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+</section>
+{% endblock %}

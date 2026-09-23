@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Search &middot; Car-Go{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="auth wrap">
+  <section class="box auth-box" aria-labelledby="search-title">
+    <div class="auth-inner">
+
+      <header class="auth-head">
+        <h1 class="auth-title" id="search-title">Search</h1>
+      </header>
+
+      <form class="form" action="/regsearch" method="get">
+        <div class="field">
+          <label for="q">Search term</label>
+          <input type="search" id="q" name="q" required autofocus>
+        </div>
+
+        <button class="btn btn-solid btn-block" type="submit">Search</button>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+            <p class="alert alert-{{ category }}" role="alert">{{ message }}</p>
+            {% endfor %}
+        {% endwith %}
+
+      </form>
+
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -8,6 +8,7 @@ from website import website_bp
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = "dev-only-change-this-later"
 
     # Config goes here later (secret key, DB URI, etc.)
     app.config["DEBUG"] = True

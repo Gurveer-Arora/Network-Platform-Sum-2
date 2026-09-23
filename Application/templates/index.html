@@ -8,7 +8,11 @@
     <section class="section wrap">
 
       <div class="section-head">
-        <h2 class="section-title">Lorem ipsum dolor sit amet</h2>
+        {% if user.is_logged_in %}
+          <h2 class="section-title">Welcome Back {{ first_name }} {{ last_name }}!</h2>
+        {% else %}
+          <h2 class="section-title">Welcome to Car-Go</h2>
+        {% endif %}
       </div>
 
       <div class="grid-2">
@@ -107,25 +111,6 @@
   </main>
 
 {% endblock %}
-
-  <!-- ============ FOOTER ============ -->
-  <footer class="footer">
-    <div class="wrap footer-inner">
-
-      <a class="brand" href="#">
-        <img src="static/images/cargo-logo-transparent.png" alt="Car-Go Logo" class="cargo-logo logo">
-      </a>
-
-      <nav class="footer-links" aria-label="Footer">
-        <a href="#">Lorem</a>
-        <a href="#">Ipsum</a>
-        <a href="#">Dolor</a>
-      </nav>
-
-      <p class="muted">&copy; 2026</p>
-
-    </div>
-  </footer>
 
 </body>
 </html>
